@@ -1,0 +1,6 @@
+# clasp pushes everything inside rootDir (./src) by default.
+# List any files inside src/ that should NOT be pushed to Apps Script.
+
+# Example: test files, drafts, etc.
+# src/tests/
+# src/*.test.js

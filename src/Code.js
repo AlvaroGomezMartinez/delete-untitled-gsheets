@@ -1,14 +1,12 @@
 /**
- * Deletes Google Sheets with "Untitled" in its name from Google Drive.
+ * Deletes Google Sheets with "Untitled" in their name from Google Drive.
  * The script searches for these specific files and moves them to the trash.
- * A trigger is set to run the funtion every week on Sundays between
- * midnight and 1:00 AM.
- * 
- * @function deleteUntitledSheets
+ * Intended to run on a weekly time-based trigger (e.g., Sundays between
+ * midnight and 1:00 AM).
+ *
+ * @function deleteUntitledGoogleSheets
  * @author Alvaro Gomez
- *         Academic Technology Coach
- *         Office: 210-397-9408
- *         Mobile: 210-363-1577
+ * @return {void}
  */
 function deleteUntitledGoogleSheets() {
   const query = "mimeType='application/vnd.google-apps.spreadsheet'";
