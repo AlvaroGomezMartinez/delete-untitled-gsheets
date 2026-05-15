@@ -1,6 +1,14 @@
 {
   "timeZone": "America/Chicago",
   "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "DeleteUntitledSheetsLib",
+        "libraryId": "1MNB2PhHwnPKvf2TOBqSilOzuWAl_XoNIIt--AIwPQ7HJ4p_9zla4Tbhx",
+        "version": "1",
+        "developmentMode": true
+      }
+    ]
   },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8"

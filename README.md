@@ -1,10 +1,8 @@
 # Delete Untitled Google Sheets
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 A Google Apps Script that automatically deletes Google Sheets with "Untitled" in their name from your Google Drive by moving them to the trash. Runs on a weekly time-based trigger.
 
-Originally created for Northside Independent School District (NISD). Generalized for public use.
+The script logic is maintained as an external library (`DeleteUntitledSheetsLib`) by the original author. The district-side script is a thin wrapper that calls the library — no local code changes are needed when the library is updated.
 
 ---
 
@@ -21,30 +19,33 @@ When run, the script:
 
 ## Setup
 
-### 1. Clone or copy the script
-
-You can deploy this script in two ways:
-
-**Option A — Via clasp (recommended for developers):**
-
-```bash
-git clone https://github.com/<your-username>/delete-untitled-gsheets.git
-cd delete-untitled-gsheets
-npm install -g @google/clasp
-clasp login
-clasp create --type standalone --title "Delete Untitled Google Sheets"
-clasp push
-```
-
-**Option B — Manually via the Apps Script editor:**
+### 1. Create a new standalone Apps Script project
 
 1. Go to [script.google.com](https://script.google.com) and create a new standalone project
-2. Copy the contents of `src/Code.js` into the editor
-3. Save the project
+2. Name it something like `Delete Untitled Google Sheets`
 
-### 2. Set Up a Time-Based Trigger
+### 2. Add the external library
 
-The script is designed to run automatically on a weekly schedule. To set up the trigger manually:
+1. In the Apps Script editor, click **+** next to **Libraries** in the left sidebar
+2. Enter the Script ID for `DeleteUntitledSheetsLib`:
+   ```
+   1MNB2PhHwnPKvf2TOBqSilOzuWAl_XoNIIt--AIwPQ7HJ4p_9zla4Tbhx
+   ```
+3. Click **Look up**, select the latest version (or **HEAD** for always-latest)
+4. Set the identifier to `DeleteUntitledSheetsLib`
+5. Click **Add**
+
+### 3. Add the wrapper function
+
+Replace the default `Code.gs` content with:
+
+```js
+function deleteUntitledGoogleSheets() {
+  DeleteUntitledSheetsLib.deleteUntitledGoogleSheets();
+}
+```
+
+### 4. Set Up a Time-Based Trigger
 
 1. In the Apps Script editor, click **Triggers** (clock icon) in the left sidebar
 2. Click **+ Add Trigger**
@@ -56,11 +57,23 @@ The script is designed to run automatically on a weekly schedule. To set up the 
    - **Time of day:** Midnight to 1am (or your preference)
 4. Click **Save** and authorize the script when prompted
 
-### 3. Required Permissions
+### 5. Required Permissions
 
 The script requires the following OAuth scope, which Apps Script will request automatically on first run:
 
 - `https://www.googleapis.com/auth/drive` — to search for and trash files in Google Drive
+
+---
+
+## Updating the Library
+
+When the library author publishes a new version:
+
+1. In the Apps Script editor, go to **Libraries → DeleteUntitledSheetsLib**
+2. Change the version to the latest available
+3. Click **Save**
+
+No changes to the wrapper function are needed.
 
 ---
 
@@ -75,7 +88,7 @@ This script does not require any Script Properties. No configuration is needed b
 ```
 delete-untitled-gsheets/
 ├── src/
-│   ├── Code.js           # Main script
+│   ├── Code.js           # Wrapper that calls the external library
 │   └── appsscript.json   # Apps Script manifest
 ├── .claspignore          # Controls which files clasp pushes
 ├── .gitignore
@@ -84,13 +97,3 @@ delete-untitled-gsheets/
 ```
 
 ---
-
-## Attribution
-
-Originally created for Northside Independent School District (NISD). Generalized and released for public use upon retirement.
-
----
-
-## License
-
-[MIT](LICENSE) © 2025 Alvaro Gomez

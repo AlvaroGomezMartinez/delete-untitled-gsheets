@@ -1,32 +1,18 @@
 /**
- * Deletes Google Sheets with "Untitled" in their name from Google Drive.
- * The script searches for these specific files and moves them to the trash.
- * Intended to run on a weekly time-based trigger (e.g., Sundays between
- * midnight and 1:00 AM).
+ * Calls the deleteUntitledGoogleSheets function from the DeleteUntitledSheetsLib
+ * external library. The library is maintained by Alvaro Gomez and handles
+ * finding and trashing all Google Sheets named "Untitled" or "Untitled(n)"
+ * in the authenticated user's Google Drive.
+ *
+ * Library: DeleteUntitledSheetsLib
+ * Maintained by: Alvaro Gomez (alvaro.gomez@iltconsulting.net)
+ *
+ * To update the library version, go to:
+ * Apps Script Editor → Libraries → DeleteUntitledSheetsLib → change version
  *
  * @function deleteUntitledGoogleSheets
- * @author Alvaro Gomez
  * @return {void}
  */
 function deleteUntitledGoogleSheets() {
-  const query = "mimeType='application/vnd.google-apps.spreadsheet'";
-
-  const files = DriveApp.searchFiles(query);
-
-  while (files.hasNext()) {
-    const file = files.next();
-    const fileName = file.getName();
-    const fileId = file.getId();
-
-    if (fileName === "Untitled" || fileName.match(/^Untitled\(\d+\)$/)) {
-      Logger.log(`Deleting file: Name = ${fileName}, ID = ${fileId}`);
-
-      try {
-        DriveApp.getFileById(fileId).setTrashed(true);
-        Logger.log(`Successfully deleted file: ${fileName}`);
-      } catch (error) {
-        Logger.log(`Failed to delete file: ${fileName}, Error: ${error.message}`);
-      }
-    }
-  }
+  DeleteUntitledSheetsLib.deleteUntitledGoogleSheets();
 }
